@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#124c40"><meta name="description" content="SavEx: manage your savings circles, together.">
+  <title>SavEx · Save together</title>
+  <link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"><link rel="stylesheet" href="/app.css">
+  <script src="/session.js" defer></script>
+  <script src="/report-table.js" defer></script>
+  <script src="/app.js" defer></script><script src="/dashboard-menu.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar"><a class="brand" href="/" aria-label="SavEx home"><span class="brandmark">S</span>SavEx<span class="branddot">.</span></a><div class="header-actions"><span class="region">Nigeria · NGN</span><button data-theme-toggle class="secondary" type="button" aria-pressed="false">Dark mode</button><button id="install" class="secondary" hidden>Install app</button><button id="logout" class="secondary" hidden>Sign out</button></div></header>
+  <main id="main">
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <div id="offline" class="banner" hidden>You’re offline. Connect to sign in or update your savings. Money actions are unavailable offline.</div>
+    <section id="welcome" class="welcome">
+      <div class="intro"><p class="eyebrow">SMALL STEPS. SHARED AMBITION.</p><h1>A better tomorrow<br>starts <em>together.</em></h1><p class="lead">Organise your savings circle, bring your people together, and keep your goals in view.</p><div class="features"><span>01 &nbsp; Create your circle</span><span>02 &nbsp; Invite your people</span><span>03 &nbsp; Plan your contributions</span></div><div class="intro-note"><span class="spark">✦</span><p>Built for everyday savers, small businesses, and communities.</p></div></div>
+      <section class="card auth-card" aria-labelledby="auth-title"><p class="eyebrow">YOUR NEXT CHAPTER</p><h2 id="auth-title">Welcome back</h2><p id="auth-help" class="muted">Sign in to your savings space.</p><div class="tabs"><button id="login-tab" class="selected" type="button" aria-pressed="true">Sign in</button><button id="register-tab" type="button" aria-pressed="false">Create account</button></div>
+        <form id="auth-form"><div id="register-fields" hidden><label>Full name<input name="fullName" autocomplete="name" minlength="2" maxlength="100"></label><label>Nigerian mobile number<input name="phone" type="tel" autocomplete="tel" placeholder="08012345678" pattern="(\+234|0)[789][01][0-9]{8}"></label></div><label id="identity-label">Email or phone<input name="emailOrPhone" autocomplete="username" required maxlength="150"></label><label>Password<input name="password" type="password" autocomplete="current-password" required maxlength="72"></label><button class="primary full" type="submit" id="auth-submit">Sign in</button></form>
+        <p class="small muted">Nigeria-first pilot. International accounts and payments are planned, and are not available yet.</p>
+      </section>
+    </section>
+    <section id="dashboard" hidden>
+      <nav class="dashboard-nav" aria-label="Dashboard sections"><a href="#overview" data-view="overview">Overview</a><a href="#payments" data-view="payments">Payments & history</a><a href="#savings" data-view="savings">Savings circles</a><a href="#account" data-view="account">Account</a><a href="#assistants" data-view="assistants">Assistants</a></nav>
+      <div class="section-heading"><div><p class="eyebrow">YOUR SAVINGS SPACE</p><h1 id="greeting">Welcome back</h1><p class="muted">Make room for your next big thing.</p></div><button id="refresh" class="secondary">Refresh balances</button></div>
+      <div class="summary"><article class="balance-card"><p>Available balance</p><h2 id="available">—</h2><span>NGN wallet</span></article><article class="card metric"><p>Wallet balance</p><h2 id="balance">—</h2><p class="muted">Confirmed funds</p></article><article class="card metric"><p>Reserved funds</p><h2 id="locked">—</h2><p class="muted">Committed to your savings</p></article></div>
+      <section class="overview-actions" data-dashboard-view="overview" aria-label="Dashboard shortcuts"><a href="#payments"><span class="shortcut-icon" aria-hidden="true">↗</span><strong>Move your money</strong><span>Fund your wallet and review withdrawals</span><b aria-hidden="true">→</b></a><a href="#savings"><span class="shortcut-icon" aria-hidden="true">◎</span><strong>Grow together</strong><span>Manage your savings circles</span><b aria-hidden="true">→</b></a><a href="#assistants"><span class="shortcut-icon" aria-hidden="true">✦</span><strong>A little guidance</strong><span>Plan savings and understand payments</span><b aria-hidden="true">→</b></a></section>
+      
+<section class="card" data-dashboard-view="payments" id="payments-panel" aria-labelledby="payments-title">
+  <div class="dashboard-section-label">Wallet services</div>
+  <div class="section-heading"><div><p class="eyebrow">PAYMENTS & EVERYDAY BILLS</p><h2 id="payments-title">Your money, in one place</h2></div><button id="payments-refresh" class="secondary" type="button">Refresh payments</button></div>
+  <p id="payment-mode" class="banner" role="status">Payment setup is being checked.</p>
+    <div id="payment-readiness" class="small" aria-live="polite"></div>
+    <p id="customer-transfer-balance" class="small" aria-live="polite">Withdrawal funding status has not been checked.</p>
+  <section id="payout-wallet-panel" aria-labelledby="payout-wallet-title" hidden>
+    <h3 id="payout-wallet-title">Your personal funding account</h3>
+    <p class="small">Transfer to this account to fund your personal payout wallet. Existing checkout deposits remain in your checkout wallet. Only bank withdrawals use this balance; bills use the checkout wallet.</p>
+    <p id="payout-wallet-status" role="status" aria-live="polite"></p>
+    <div id="payout-wallet-details"></div>
+    <form id="payout-wallet-create"><label>Confirm your password to create or retrieve your account<input name="password" type="password" required maxlength="72" autocomplete="current-password"></label><button class="primary" type="submit">Create or retrieve funding account</button></form>
+    <button id="payout-wallet-refresh" class="secondary" type="button" hidden>Check funding and balance</button>
+  </section>
+  <div class="quick-actions" role="group" aria-label="Choose a payment service"><button type="button" class="secondary" data-payment-kind="DEPOSIT">＋ Add money</button><button type="button" class="secondary" data-payment-kind="WITHDRAWAL">↗ Withdraw</button><button type="button" class="secondary" data-payment-kind="AIRTIME">Airtime</button><button type="button" class="secondary" data-payment-kind="DATA">Mobile data</button><button type="button" class="secondary" data-payment-kind="ELECTRICITY">Electricity</button><button type="button" class="secondary" data-payment-kind="CABLE">Cable TV</button><button type="button" class="secondary" data-payment-kind="INTERNET">Internet</button></div>
+  <p class="small muted">Choose a service below. Availability depends on your account and the current payment setup.</p>
+  <form id="money-form">
+    <div class="form-grid">
+      <label>Your name<input id="payment-name" readonly autocomplete="name"></label>
+      <label>Your email<input id="payment-email" type="email" readonly autocomplete="email"></label>
+      <label>What would you like to do?<select name="kind" id="payment-kind"><option value="DEPOSIT">Add money</option><option value="WITHDRAWAL">Withdraw to a bank</option><option value="AIRTIME">Buy airtime</option><option value="DATA">Buy mobile data</option><option value="ELECTRICITY">Pay electricity</option><option value="CABLE">Pay cable TV</option><option value="INTERNET">Pay internet subscription</option><option value="CONTRIBUTION" hidden>Circle contribution</option></select></label>
+      <label id="payment-provider-label" hidden>Bank or bill provider<select name="serviceId" id="payment-provider"><option value="">Select</option></select></label>
+      <label id="withdrawal-source-label" hidden>Withdraw from<select id="withdrawal-source"><option value="CHECKOUT">Checkout wallet — existing deposits</option><option value="PAYOUT_WALLET" disabled>Personal funding account</option></select></label>
+      <label id="payment-package-label" hidden>Package<select name="variationCode" id="payment-package"><option value="">Select</option></select></label>
+      <label id="payment-destination-label" hidden><span id="payment-customer-label">Account or Nigerian phone number</span><input name="destination" inputmode="text" maxlength="64" autocomplete="off"></label>
+      <label>Amount (₦)<input name="amount" type="number" required min="1" max="1000000" step="0.01"></label>
+      <label id="payment-password-label" hidden>Confirm your password<input name="password" type="password" maxlength="72" autocomplete="current-password"></label>
+    </div>
+    <p id="payment-catalogue-status" class="small" role="status" aria-live="polite"></p><button id="payment-catalogue-retry" type="button" class="secondary" hidden>Reload providers</button><div id="bank-lookup-panel" hidden><label>Account holder name<input id="bank-account-name" readonly aria-describedby="bank-lookup-status" placeholder="Enter the bank and account number above"></label><p id="bank-lookup-status" class="small" role="status" aria-live="polite"></p><button id="bank-lookup-retry" class="secondary" type="button" hidden>Check account again</button></div>
+    <p class="small muted">Review the network, recipient and amount carefully. Pending payments keep funds reserved until their outcome is confirmed.</p>
+    <button class="primary" id="payment-submit" type="submit" disabled>Review payment</button>
+  </form>
+  <dialog id="payment-confirm"><h2>Confirm your payment</h2><p id="payment-summary"></p><p class="small">Do not submit a second payment if this one is pending.</p><button id="payment-send" class="primary">Confirm payment</button> <button id="payment-cancel" class="secondary">Cancel</button></dialog>
+  <div id="payment-history" aria-live="polite"></div>
+</section>
+<section class="card" data-dashboard-view="account" id="email-panel">
+  <h2>Verify your email</h2>
+  <p id="email-status" class="small muted" role="status">Check your registered email to confirm ownership.</p>
+  <form id="email-form">
+    <button id="email-send" class="secondary" type="button">Send verification code</button>
+    <label>Email code<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required placeholder="Six-digit code"></label>
+    <button id="email-check" class="primary" type="submit">Verify email</button>
+  </form>
+  <p class="small muted">Codes expire in 10 minutes. Wait one minute before resending; up to five emails per hour. Email verification does not complete identity approval.</p>
+</section>
+<section class="card" data-dashboard-view="assistants" id="assistants-panel" aria-labelledby="assistants-title">
+<p class="eyebrow">YOUR SAVEX HELPERS</p><h2 id="assistants-title">Plan, understand, prepare</h2>
+<p class="muted">Guided assistants using SavEx records and calculations. They do not use a language model or send money automatically. No external AI service receives your details.</p>
+<div class="assistant-grid">
+<section class="card"><h3>Savings planner</h3><p class="small muted">Break a goal into weekly or monthly contributions. Enter only the savings assigned to this goal.</p><form id="assistant-savings"><label>Goal amount (₦)<input name="goal" type="number" min="1" max="100000000" step="0.01" required></label><label>Already saved (₦)<input name="saved" type="number" min="0" max="100000000" step="0.01" value="0" required></label><label>Number of contributions<input name="periods" type="number" min="1" max="520" step="1" value="12" required></label><label>Frequency<select name="frequency"><option value="WEEKLY">Weekly</option><option value="MONTHLY">Monthly</option></select></label><button class="primary" type="submit">Build savings plan</button></form><div id="assistant-savings-result" role="status" aria-live="polite"></div></section>
+<section class="card"><h3>Transaction helper</h3><p class="small muted">Explains your recorded payment status. It does not perform a new Flutterwave check or release funds.</p><button id="assistant-history-load" class="secondary" type="button">Load my recent transactions</button><form id="assistant-transaction"><label>Your transaction<select id="assistant-reference" name="reference" required><option value="">Load your transactions first</option></select></label><button class="primary" type="submit">Explain this transaction</button></form><div id="assistant-transaction-result" role="status" aria-live="polite"></div></section>
+<section class="card"><h3>Payment preparation</h3><p class="small muted">Prepare a proposal, then review and approve in Payments. Never enter a password here.</p><form id="assistant-payment"><label>Service<select name="kind"><option value="DEPOSIT">Add money</option><option value="WITHDRAWAL">Withdraw to a bank</option></select></label><label>Amount (₦)<input name="amount" type="number" min="1" max="1000000" step="0.01" required></label><div id="assistant-bank-fields" hidden><button id="assistant-banks-load" class="secondary" type="button">Load banks</button><label>Bank<select name="bankCode"><option value="">Select a bank</option></select></label><label>Bank account number<input name="accountNumber" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" autocomplete="off"></label></div><button class="primary" type="submit">Prepare proposal</button></form><div id="assistant-payment-result" role="status" aria-live="polite"></div><button id="assistant-use-proposal" class="secondary" type="button" hidden>Continue to payment review</button></section>
+</div></section>
+<div class="workspace" data-dashboard-view="savings" id="savings-space"><section><div class="section-heading"><div><p class="eyebrow">BETTER, TOGETHER</p><h2>Your savings circles</h2></div><button id="show-create" class="primary">+ Create circle</button></div><div id="groups" class="groups"></div><div class="pagination"><button id="previous" class="secondary" disabled>Previous</button><span id="page-label">Page 1</span><button id="next" class="secondary" disabled>Next</button></div></section>
+        <aside><section class="card"><p class="eyebrow">HAVE AN INVITATION?</p><h2>Join your people</h2><p class="muted">Enter the 8-character code shared by your circle organiser.</p><form id="join-form"><label>Invite code<input name="inviteCode" required minlength="8" maxlength="8" pattern="[A-Za-z0-9]{8}" placeholder="AB12CD34" autocapitalize="characters"></label><button class="secondary full" type="submit">Join circle</button></form></section><section class="card note-card"><h3>One app. Wherever you are.</h3><p>Use SavEx in your browser or add it to your home screen.</p><p class="small">On iPhone or iPad: open in Safari, tap Share, then Add to Home Screen. Installation options vary by browser.</p></section><section class="card"><h3>About this pilot</h3><p class="small muted">Available services and any restrictions are shown in your payments panel. Review the amount and fees before confirming a payment.</p></section></aside></div>
+    </section>
+    <dialog id="create-dialog"><form id="create-form"><div class="section-heading"><h2>Create a savings circle</h2><button id="close-create" type="button" class="secondary" aria-label="Close">×</button></div><p class="muted">Set the plan you’ll share with your members.</p><label>Circle name<input name="name" required minlength="3" maxlength="100" placeholder="Our next chapter"></label><label>Description<textarea name="description" maxlength="500" rows="2"></textarea></label><div class="form-grid"><label>Contribution per cycle (₦)<input name="contributionNaira" type="number" min="500" max="100000000" step="1" required value="5000"></label><label>Members, including you<input name="maxMembers" type="number" min="2" max="50" required value="5"></label><label>Frequency<select name="cycleFrequency"><option value="MONTHLY">Monthly</option><option value="BIWEEKLY">Every two weeks</option><option value="WEEKLY">Weekly</option></select></label><label>Start date<input name="startDate" type="date" required></label></div><p class="small muted">Payout order: organiser first, then joining order. A cycle opens on its due date and pays into the recipient’s wallet only after every member contributes. Payments are currently test-only.</p><p id="create-error" class="form-error" role="alert" hidden></p><button class="primary full" type="submit">Create circle</button></form></dialog>
+    <footer><a href="/admin.html">Reviewer portal</a><span>SavEx · Progress, together.</span><span>Designed for phone, tablet & desktop</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,9 @@
+ALTER TABLE users MODIFY COLUMN kyc_level ENUM('UNVERIFIED','REVIEWED','BVN_VERIFIED','FULL_KYC') NOT NULL DEFAULT 'UNVERIFIED';
+ALTER TABLE customer_reviews ADD COLUMN identity_method VARCHAR(24) NOT NULL DEFAULT 'BVN_CONSENT';
+ALTER TABLE customer_reviews ADD COLUMN review_notes VARCHAR(2000) NULL;
+CREATE TABLE admin_setup_lock (
+    id INT NOT NULL PRIMARY KEY,
+    administrator_id CHAR(36) NULL,
+    completed_at TIMESTAMP(6) NULL
+);
+INSERT INTO admin_setup_lock (id) VALUES (1);

@@ -1,0 +1,128 @@
+spring:
+  application:
+    name: savex-backend
+
+  profiles:
+    default: dev
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:savex}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    username: ${DB_USER:savex_user}
+    password: ${DB_PASS:savex_pass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        type:
+          preferred_uuid_jdbc_type: CHAR
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASS:}
+      timeout: 2000ms
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: 587
+    username: ${MAIL_USER:noreply@savex.ng}
+    password: ${MAIL_PASS:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.connectiontimeout: 10000
+      mail.smtp.timeout: 10000
+      mail.smtp.writetimeout: 10000
+
+savex:
+  ai:
+    enabled: ${SAVEX_AI_ENABLED:false}
+    api-key: ${OPENAI_API_KEY:}
+    model: ${SAVEX_AI_MODEL:gpt-4.1-mini}
+    daily-limit: ${SAVEX_AI_DAILY_LIMIT:50}
+    learning-enabled: ${SAVEX_AI_LEARNING_ENABLED:true}
+  security:
+    login-limit: ${SAVEX_LOGIN_LIMIT:30}
+    register-limit: ${SAVEX_REGISTER_LIMIT:15}
+    auth-window-seconds: ${SAVEX_AUTH_WINDOW_SECONDS:300}
+  admin:
+    setup-token: ${ADMIN_SETUP_TOKEN:}
+  jwt:
+    secret: ${JWT_SECRET}
+    access-token-expiry-ms: 900000       # 15 minutes
+    refresh-token-expiry-ms: 604800000   # 7 days
+
+  money:
+    mode: ${SAVEX_MONEY_MODE:OFF}
+    flutterwave-secret: ${FLW_SECRET_KEY:}
+    flutterwave-public-key: ${FLW_PUBLIC_KEY:}
+    webhook-secret: ${FLW_WEBHOOK_SECRET:}
+    public-url: ${SAVEX_PUBLIC_URL:http://localhost:8080}
+    transfers-approved: ${FLW_TRANSFERS_APPROVED:false}
+    bills-approved: ${FLW_BILLS_APPROVED:false}
+    payout-wallets-enabled: ${FLW_PAYOUT_WALLETS_ENABLED:false}
+    identity-enabled: ${FLW_IDENTITY_ENABLED:false}
+    identity-mode: ${FLW_IDENTITY_MODE:LIVE}
+    identity-secret: ${FLW_IDENTITY_SECRET:}
+    live-pilot-enabled: ${SAVEX_LIVE_PILOT_ENABLED:false}
+    live-allowed-users: ${SAVEX_LIVE_ALLOWED_USERS:}
+    live-max-transaction-kobo: ${SAVEX_LIVE_MAX_TRANSACTION_KOBO:1000000}
+    live-daily-limit-kobo: ${SAVEX_LIVE_DAILY_LIMIT_KOBO:2000000}
+    fees-enabled: true
+    history-sync-enabled: ${SAVEX_HISTORY_SYNC_ENABLED:true}
+    history-days: ${SAVEX_HISTORY_DAYS:30}
+    history-max-pages: ${SAVEX_HISTORY_MAX_PAGES:50}
+    history-max-rows: ${SAVEX_HISTORY_MAX_ROWS:5000}
+    history-sync-delay-ms: ${SAVEX_HISTORY_SYNC_DELAY_MS:300000}
+    fee-basis-points: ${SAVEX_FEE_BASIS_POINTS:50}
+    fee-minimum-kobo: ${SAVEX_FEE_MINIMUM_KOBO:0}
+    fee-maximum-kobo: ${SAVEX_FEE_MAXIMUM_KOBO:50000}
+    max-transaction-kobo: 100000000
+    daily-debit-limit-kobo: 200000000
+
+  otp:
+    expiry-minutes: 10
+    length: 6
+
+  payments:
+    enabled: false
+
+  platform:
+    country: NG
+    currency: NGN
+    min-contribution: 500      # Naira
+    max-group-size: 50
+    max-payout-cycles: 12
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha

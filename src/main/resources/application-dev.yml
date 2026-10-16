@@ -1,0 +1,28 @@
+# Local sandbox only: disposable data, no real payments, loopback binding.
+management:
+  health:
+    redis:
+      enabled: false
+    mail:
+      enabled: false
+server:
+  address: 127.0.0.1
+spring:
+  datasource:
+    url: jdbc:h2:mem:savex;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE;NON_KEYWORDS=GROUPS
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+savex:
+  jwt:
+    secret: ZGV2LW9ubHktbm90LWZvci1wcm9kdWN0aW9uLXNhdmV4LWtleS0zMi1ieXRlcw==
+  payments:
+    enabled: false

@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {"label":"SavEx: test","type":"shell","command":"mvn","args":["test"],"group":{"kind":"test","isDefault":true},"problemMatcher":[]},
+    {"label":"SavEx: package","type":"shell","command":"mvn","args":["clean","package"],"group":{"kind":"build","isDefault":true},"problemMatcher":[]},
+    {"label":"SavEx: run","type":"shell","command":"powershell","args":["-NoProfile","-ExecutionPolicy","Bypass","-File","${workspaceFolder}/scripts/start-local.ps1"],"problemMatcher":[]},
+    {"label":"SavEx: start databases","type":"shell","command":"docker","args":["compose","up","-d","savex-db","savex-redis"],"problemMatcher":[]}
+  ]
+}

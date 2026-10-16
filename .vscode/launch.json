@@ -1,0 +1,8 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+    "type": "java", "name": "SavEx: local development", "request": "launch",
+    "mainClass": "com.savex.SavExApplication", "projectName": "savex-backend",
+    "args": "--spring.profiles.active=dev", "console": "integratedTerminal"
+  }]
+}

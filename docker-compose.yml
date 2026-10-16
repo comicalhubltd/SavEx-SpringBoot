@@ -1,0 +1,75 @@
+version: "3.9"
+
+services:
+  savex-db:
+    image: mysql:8.0
+    container_name: savex-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: savex
+      MYSQL_USER: savex_user
+      MYSQL_PASSWORD: savex_pass
+      MYSQL_ROOT_PASSWORD: savex_root
+    ports:
+      - "3306:3306"
+    volumes:
+      - savex-db-data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "savex_user", "-psavex_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  savex-redis:
+    image: redis:7-alpine
+    container_name: savex-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - savex-redis-data:/data
+    command: redis-server --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  savex-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: savex-api
+    restart: unless-stopped
+    depends_on:
+      savex-db:
+        condition: service_healthy
+      savex-redis:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://savex-db:3306/savex?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      DB_HOST: savex-db
+      DB_PORT: 3306
+      DB_NAME: savex
+      DB_USER: savex_user
+      DB_PASS: savex_pass
+      REDIS_HOST: savex-redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET}
+      SAVEX_MONEY_MODE: ${SAVEX_MONEY_MODE:-OFF}
+      FLW_SECRET_KEY: ${FLW_SECRET_KEY:-}
+      FLW_WEBHOOK_SECRET: ${FLW_WEBHOOK_SECRET:-}
+      SAVEX_PUBLIC_URL: ${SAVEX_PUBLIC_URL:-http://localhost:8080}
+      FLW_TRANSFERS_APPROVED: ${FLW_TRANSFERS_APPROVED:-false}
+      FLW_BILLS_APPROVED: ${FLW_BILLS_APPROVED:-false}
+      FLW_IDENTITY_ENABLED: ${FLW_IDENTITY_ENABLED:-false}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+    ports:
+      - "8080:8080"
+
+volumes:
+  savex-db-data:
+  savex-redis-data:

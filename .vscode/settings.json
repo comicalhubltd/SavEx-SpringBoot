@@ -1,0 +1,14 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "files.encoding": "utf8",
+  "files.exclude": {
+    "**/target": true,
+    "**/.build": true
+  },
+  "java.import.exclusions": [
+    "**/target/**",
+    "**/.build/**"
+  ],
+  "editor.formatOnSave": true,
+  "java.compile.nullAnalysis.mode": "automatic"
+}
